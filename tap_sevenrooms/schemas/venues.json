@@ -1,0 +1,95 @@
+{
+	"type": ["null", "object"],
+	"additionalProperties": false,
+	"properties": {
+		"address": {"type": ["null", "string"]},
+		"black_logo": {"type": ["null", "string"]},
+		"block_logo_direct": {
+			"anyOf": [
+				{
+					"type": "array",
+					"items": {
+						"type": ["null", "object"],
+						"additionalProperties": false,
+						"properties": {
+							"large": {"type": ["null", "string"]},
+							"large_height": {"type": ["null", "integer"]},
+							"large_width": {"type": ["null", "string"]},
+							"medium": {"type": ["null", "string"]},
+							"medium_height": {"type": ["null", "integer"]},
+							"medium_width": {"type": ["null", "integer"]},
+							"raw": {"type": ["null", "string"]},
+							"small": {"type": ["null", "string"]},
+							"small_height": {"type": ["null", "integer"]},
+							"small_width": {"type": ["null", "integer"]}
+						}
+					}
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"country": {"type": ["null", "string"]},
+		"cross_street": {"type": ["null", "string"]},
+		"currency_code": {"type": ["null", "string"]},
+		"external_venue_id": {"type": ["null", "string"]},
+		"full_dining_backend": {"type": ["null", "boolean"]},
+		"grid_enabled": {"type": ["null", "boolean"]},
+		"id": {"type": ["null", "string"]},
+		"internal_name": {"type": ["null", "string"]},
+		"membership_enabled": {"type": ["null", "boolean"]},
+		"name": {"type": ["null", "string"]},
+		"neighborhood": {"type": ["null", "string"]},
+		"phone_number": {"type": ["null", "string"]},
+		"photos": {
+			"anyOf": [
+				{
+					"type": "array",
+					"items": {"type": ["null", "string"]}
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"policy": {"type": ["null", "string"]},
+		"postal_code": {"type": ["null", "string"]},
+		"primary_color": {"type": ["null", "string"]},
+		"secondary_color": {"type": ["null", "string"]},
+		"state": {"type": ["null", "string"]},
+		"unique_confirmation_prefix": {"type": ["null", "string"]},
+		"venue_class": {"type": ["null", "string"]},
+		"venue_group_id": {"type": ["null", "string"]},
+		"venue_group_name": {"type": ["null", "string"]},
+		"venue_url_key": {"type": ["null", "string"]},
+		"website": {"type": ["null", "string"]},
+		"white_logo": {"type": ["null", "string"]},
+		"white_logo_direct": {
+			"anyOf": [
+				{
+					"type": "array",
+					"items": {
+						"type": ["null", "object"],
+						"additionalProperties": false,
+						"properties": {
+							"large": {"type": ["null", "string"]},
+							"large_height": {"type": ["null", "integer"]},
+							"large_width": {"type": ["null", "string"]},
+							"medium": {"type": ["null", "string"]},
+							"medium_height": {"type": ["null", "integer"]},
+							"medium_width": {"type": ["null", "integer"]},
+							"raw": {"type": ["null", "string"]},
+							"small": {"type": ["null", "string"]},
+							"small_height": {"type": ["null", "integer"]},
+							"small_width": {"type": ["null", "integer"]}
+						}
+					}
+				},
+				{
+					"type": "null"
+				}
+			]
+		}
+	}
+}

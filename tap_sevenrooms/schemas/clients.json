@@ -1,0 +1,173 @@
+{
+	"type": ["null", "object"],
+	"additionalProperties": false,
+	"properties": {
+		"address": {"type": ["null", "string"]},
+		"address_2": {"type": ["null", "string"]},
+		"anniversary_day": {"type": ["null", "integer"]},
+		"anniversary_month": {"type": ["null", "integer"]},
+		"avg_rating": {"type": ["null", "number"]},
+		"birthday_alt_day": {"type": ["null", "integer"]},
+		"birthday_alt_month": {"type": ["null", "integer"]},
+		"birthday_day": {"type": ["null", "integer"]},
+		"birthday_month": {"type": ["null", "integer"]},
+		"city": {"type": ["null", "string"]},
+		"client_tags": {
+			"anyOf": [
+				{
+					"type": "array",
+					"items": {
+						"type": ["null", "object"],
+						"additionalProperties": false,
+						"properties": {
+							"color": {"type": ["null", "string"]},
+							"group": {"type": ["null", "string"]},
+							"group_display": {"type": ["null", "string"]},
+							"tag": {"type": ["null", "string"]},
+							"tag_display": {"type": ["null", "string"]}
+						}
+					}
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"company": {"type": ["null", "string"]},
+		"country": {"type": ["null", "string"]},
+		"created": {"type": ["null", "string"], "format": "date-time"},
+		"custom_fields": {
+			"anyOf": [
+				{
+					"type": "array",
+					"items": {
+						"type": ["null", "object"],
+						"additionalProperties": false,
+						"properties": {
+							"system_name": {"type": ["null", "string"]},
+							"display_order": {"type": ["null", "integer"]},
+							"name": {"type": ["null", "string"]},
+							"value": {"type": ["null", "string"]}
+						}
+					}
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"deleted": {"type": ["null", "string"], "format": "date-time"},
+		"email": {"type": ["null", "string"]},
+		"email_alt": {"type": ["null", "string"]},
+		"external_user_id": {"type": ["null", "string"]},
+		"first_name": {"type": ["null", "string"]},
+		"gender": {"type": ["null", "string"]},
+		"has_billing_profile": {"type": ["null", "boolean"]},
+		"id": {"type": ["null", "string"]},
+		"is_contact_private": {"type": ["null", "boolean"]},
+		"is_one_time_guest": {"type": ["null", "boolean"]},
+		"last_name": {"type": ["null", "string"]},
+		"loyalty_id": {"type": ["null", "string"]},
+		"loyalty_rank": {"type": ["null", "integer"]},
+		"loyalty_tier": {"type": ["null", "string"]},
+		"marketing_opt_in": {"type": ["null", "boolean"]},
+		"marketing_opt_in_ts": {"type": ["null", "string"]},
+		"member_groups": {
+			"anyOf": [
+				{
+					"type": "array",
+					"items": {
+						"type": ["null", "object"],
+						"additionalProperties": true
+					}
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"notes": {"type": ["null", "string"]},
+		"phone_number": {"type": ["null", "string"]},
+		"phone_number_alt": {"type": ["null", "string"]},
+		"phone_number_alt_locale": {"type": ["null", "string"]},
+		"phone_number_locale": {"type": ["null", "string"]},
+		"photo": {
+			"anyOf": [
+				{
+					"type": "array",
+					"items": {
+						"type": ["null", "object"],
+						"additionalProperties": false,
+						"properties": {
+							"medium": {"type": ["null", "string"]},
+							"large_height": {"type": ["null", "integer"]},
+							"small_width": {"type": ["null", "integer"]},
+							"medium_width": {"type": ["null", "integer"]},
+							"small_height": {"type": ["null", "integer"]},
+							"large": {"type": ["null", "string"]},
+							"raw": {"type": ["null", "string"]},
+							"medium_height": {"type": ["null", "integer"]},
+							"small": {"type": ["null", "string"]},
+							"large_width": {"type": ["null", "string"]}
+						}
+					}
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"photo_crop_info": {
+			"anyOf": [
+				{
+					"type": "array",
+					"items": {
+						"type": ["null", "object"],
+						"additionalProperties": false,
+						"properties": {
+							"x": {"type": ["null", "integer"]},
+							"y": {"type": ["null", "integer"]},
+							"height": {"type": ["null", "integer"]},
+							"width": {"type": ["null", "integer"]}
+						}
+					}
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"postal_code": {"type": ["null", "string"]},
+		"private_notes": {"type": ["null", "string"]},
+		"reference_code": {"type": ["null", "string"]},
+		"salutation": {"type": ["null", "string"]},
+		"state": {"type": ["null", "string"]},
+		"status": {"type": ["null", "string"]},
+		"tags": {"type": ["null", "string"]},
+		"title": {"type": ["null", "string"]},
+		"total_cancelations": {"type": ["null", "integer"]},
+		"total_covers": {"type": ["null", "integer"]},
+		"total_noshows": {"type": ["null", "integer"]},
+		"total_spend": {"type": ["null", "integer"]},
+		"total_spend_per_cover": {"type": ["null", "integer"]},
+		"total_spend_per_visit": {"type": ["null", "integer"]},
+		"total_visits": {"type": ["null", "integer"]},
+		"updated": {"type": ["null", "string"], "format": "date-time"},
+		"user": {
+			"anyOf": [
+				{
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"id": {"type": ["null", "string"]},
+						"name": {"type": ["null", "string"]}
+					}
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"venue_group_id": {"type": ["null", "string"]}
+	}
+}
