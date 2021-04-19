@@ -1,3 +1,5 @@
+from datetime import datetime
+from tap_sevenrooms import streams
 import singer
 import backoff
 import requests
@@ -132,37 +134,46 @@ class SevenRoomsClient:
         else:
             handle_request_error(res)
 
-    def request_data(self, stream, day):
+    def request_data(self, stream=None, endpoint=None, data_key=None, day=None):
+
+        if not stream or not endpoint:
+            raise SevenroomClientError('No stream or endpoint sent to client for request.')
+
+        # Default to today.
+        if not day:
+            day = datetime.now()
+
+        # This is the key in the response body
+        # ex, the key would be 'objects' for this response: { 'status': 200, 'objects': [] }
+        if not data_key:
+            data_key = 'results'
+
         metadata = singer.metadata.to_map(stream.metadata)[()]
         data = []
         date = day.strftime()
         date_time = day.strftime("%Y-%m-%d 00:00")
         logger.info(f"Request for date {date}")
-        for venue_id in self.venue_ids:
-            logger.info(f"venue {venue_id}")
 
-            params = {
-                "venue_id": venue_id,
-                "to_date": date,
-                "from_date": date,
-                "limit": 400
-            }
-            params.update(metadata)
+        params = {
+            "to_date": date,
+            "from_date": date,
+            "limit": 400
+        }
+        params.update(metadata)
 
-            page = 1
-            # Loop until custor returns nothing
-            while True:
-                logger.info(f"...page {page}...")
+        page = 1
+        # Loop until cursor returns nothing
+        while True:
+            logger.info(f"...page {page}...")
 
-                # TODO: dont hardcode reservations here, use catalogs or streams or something.
-                res = self.get_data("reservations", params)
+            res = self.get_data(endpoint, params)
 
-                if not res['results']:
-                    break
+            if not res['results']:
+                break
 
-                params['cursor'] = res['cursor']
-                data += parse_results(res["results"], date_time)
-                page += 1
+            params['cursor'] = res['cursor']
+            data += parse_results(res[data_key], date_time)
+            page += 1
 
         return data
 
