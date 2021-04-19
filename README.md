@@ -19,7 +19,6 @@ API login is performed via ID and SECRET if no API token is found.
   "client_id": string,
   "client_secret": string,
   "start_date": string (YYYY-MM-DD),
-  "venue_id": comma separated string, (default: all)
 }
 ```
 

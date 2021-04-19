@@ -1,5 +1,4 @@
 from datetime import datetime
-from tap_sevenrooms import streams
 import singer
 import backoff
 import requests
@@ -87,10 +86,6 @@ class SevenRoomsClient:
         if 'client_id' not in config or 'client_secret' not in config:
             raise Exception('No client ID or Secret provided')
 
-        # TODO: Check if all requests use this.
-        if 'venue_id' in config and config['venue_id']:
-            self.venue_ids = config['venue_id'].split(',')
-
         self.client_id = config['client_id']
         self.client_secret = config['client_secret']
 
@@ -106,10 +101,6 @@ class SevenRoomsClient:
         api_token = res.json()['data']['token']
         self.s = requests.Session()
         self.s.headers.update(dict(Authorization=api_token))
-
-        if not self.venue_ids:
-            # If no venue ID was set, get all venue ids.
-            self.venue_ids = [venue['id'] for venue in self.get_data('venues/all')]
 
         return self
 
