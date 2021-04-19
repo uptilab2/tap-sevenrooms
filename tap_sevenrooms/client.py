@@ -70,7 +70,12 @@ def handle_request_error(res: Response):
     else:
         exception = ERROR_CODE_EXCEPTION_MAPPING.get(res.status_code, SevenroomClientError)
 
-    raise exception(f'{res.status_code} --- {res.json().get("msg", "no error message in response")}')
+    try:
+        response = res.json()
+    except ValueError:
+        raise exception(f'{res.status_code} --- Response not JSON: {res.text}')
+
+    raise exception(f'{res.status_code} --- {response.get("msg", "no error message in response")}')
 
 
 class SevenRoomsClient:
@@ -115,15 +120,24 @@ class SevenRoomsClient:
     @singer.utils.ratelimit(600, 60)
     def get_data(self, route, params):
         # We will always be using GET, as we have no need to push info upstream.
-        res = self.s.get(f'{self.base_url}/{route}', json=params)
+        res = self.s.get(f'{self.base_url}/{route}', params=params)
 
         logger.info(f'Sevenroom API request /{route} -- response status: {res.status_code}')
-        if res.status_code == 200 and 'data' in res:
-            return res['data']
+        if res.status_code == 200:
+
+            try:
+                res_data = res.json().get('data')
+            except ValueError:
+                handle_request_error(res)
+
+            if not res_data:
+                handle_request_error(res)
+
+            return res_data
         else:
             handle_request_error(res)
 
-    def request_data(self, stream=None, endpoint=None, data_key=None, day=None):
+    def request_data(self, stream=None, endpoint=None, data_key=None, day=None, use_dates=True):
 
         if not stream or not endpoint:
             raise SevenroomClientError('No stream or endpoint sent to client for request.')
@@ -137,23 +151,22 @@ class SevenRoomsClient:
         if not data_key:
             data_key = 'results'
 
-        metadata = singer.metadata.to_map(stream.metadata)[()]
         data = []
-        date = day.strftime()
+        date = day.strftime("%Y-%m-%d")
         date_time = day.strftime("%Y-%m-%d 00:00")
         logger.info(f"Request for date {date}")
 
-        params = {
-            "to_date": date,
-            "from_date": date,
-            "limit": 400
-        }
-        params.update(metadata)
+        params = dict(limit=400)
+
+        if use_dates:
+            params['to_date'] = date
+            params['from_date'] = date
 
         page = 1
         # Loop until cursor returns nothing
         while True:
             logger.info(f"...page {page}...")
+            logger.info(params)
 
             res = self.get_data(endpoint, params)
 
