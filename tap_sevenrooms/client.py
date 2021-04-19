@@ -7,9 +7,6 @@ from requests import Response
 
 logger = singer.get_logger()
 
-# Default to demo API. TODO: prod API
-BASE_URL = 'https://demo.sevenrooms.com/api-ext/2_2'
-
 
 class SevenroomClientError(Exception):
     pass
@@ -88,9 +85,10 @@ class SevenRoomsClient:
 
         self.client_id = config['client_id']
         self.client_secret = config['client_secret']
+        self.base_url = config.get('base_url', 'https://demo.sevenrooms.com/api-ext/2_2')
 
     def __enter__(self):
-        res = requests.post(f'{BASE_URL}/auth', data=dict(client_id=self.client_id, client_secret=self.client_secret))
+        res = requests.post(f'{self.base_url}/auth', data=dict(client_id=self.client_id, client_secret=self.client_secret))
 
         # An exception can be raised here.
         if res.status_code != 200:
@@ -117,7 +115,7 @@ class SevenRoomsClient:
     @singer.utils.ratelimit(600, 60)
     def get_data(self, route, params):
         # We will always be using GET, as we have no need to push info upstream.
-        res = self.s.get(f'{BASE_URL}/{route}', json=params)
+        res = self.s.get(f'{self.base_url}/{route}', json=params)
 
         logger.info(f'Sevenroom API request /{route} -- response status: {res.status_code}')
         if res.status_code == 200 and 'data' in res:
