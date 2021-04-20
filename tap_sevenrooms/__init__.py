@@ -2,18 +2,18 @@
 import os
 import sys
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import singer
 from singer import utils, metadata
 from singer.catalog import Catalog, CatalogEntry, Schema
-from singer.schema import get_schemas, flatten_streams
+from .schema import get_schemas, flatten_streams
 
 # Import my little context manager
 from .client import SevenRoomsClient
 from .streams import STREAMS
 
-
+DATE_FORMAT = "%Y-%m-%d"
 REQUIRED_CONFIG_KEYS = [
     "client_id",
     "client_secret",
@@ -99,7 +99,19 @@ def sync(client, config, state, catalog):
             data_key = endpoint_config.get('data_key', 'results')
 
             # The field being looked up for replication, usually the "updated" datetime column
-            bookmark_column = endpoint_config.get('replication_key', None)
+            bookmark_column = endpoint_config.get('replication_keys', None)
+
+            # This is used to determine if we are using to_date from_date in the query params
+            use_dates = endpoint_config.get('use_dates', True)
+
+            # This is any additionnal params that may be used for the request to the API
+            params = endpoint_config.get('params', None)
+
+            if params:
+                for param_key, param_value in params.items():
+                    # If param is format placeholder, use the key to get the value from the config.
+                    if param_value == '{}' and config.get(param_key):
+                        params[param_key] = param_value.format(config[param_key])
 
             # replication_ind defaults to True, set to False when you shouldn't replicate parent
             replication_ind = endpoint_config.get('replication_ind', True)
@@ -120,7 +132,7 @@ def sync(client, config, state, catalog):
                 LOGGER.info(f'Stream: {stream_name}, selected_fields: {selected_fields}')
                 singer.write_schema(
                     stream_name=stream.tap_stream_id,
-                    schema=stream.schema,
+                    schema=stream.schema.to_dict(),
                     key_properties=stream.key_properties,
                 )
             else:
@@ -163,20 +175,29 @@ def sync(client, config, state, catalog):
 
             today = datetime.now()
             day = state.get(stream.tap_stream_id) or config.get('start_date')
-            end_date = config['end_date'][:10] if 'end_date' in config and config['end_date'] else str(today.strftime('%Y-%m-%d'))
+            end_date = utils.strptime_to_utc(config['end_date'][:10]) if 'end_date' in config and config['end_date'] else today.strftime(DATE_FORMAT)
+
+            day = utils.strptime_to_utc(day)
+            end_date = utils.strptime_to_utc(end_date)
 
             LOGGER.info(f'Sync data from {day} to {end_date}')
 
             # We sync the fields for each day
-            while day < end_date and day <= today:
-                tap_data = client.request_data(stream=stream, endpoint=path, data_key=data_key, day=day)
+            while day <= end_date:
 
-                for row in tap_data():
+                if not use_dates:
+                    # The case of items not iterable by date then skip to end_date and don't include params in request
+                    day = end_date
+                    tap_data = client.request_data(stream=stream, endpoint=path, data_key=data_key, day=day, use_dates=False, additional_params=params)
+                else:
+                    tap_data = client.request_data(stream=stream, endpoint=path, data_key=data_key, day=day, additional_params=params)
+
+                for row in tap_data:
                     # write one or more rows to the stream:
                     singer.write_records(stream.tap_stream_id, [row])
                     if bookmark_column:
                         # update bookmark to latest value
-                        singer.write_state({stream.tap_stream_id: row[bookmark_column]})
+                        singer.write_state({stream.tap_stream_id: day.strftime(DATE_FORMAT)})
 
                     # Handle the child streams and get the data for those
                     if children_to_sync:
@@ -192,17 +213,36 @@ def sync(client, config, state, catalog):
                                     # we can use .format() to insert the parent ID into the URL route.
                                     child_path = child_endpoint_config.get('path', child_stream.tap_stream_id).format(str(parent_id))
 
+                                    # This is any additionnal params that may be used for the request to the API
+                                    child_params = child_endpoint_config.get('params', None)
+
+                                    if child_params:
+                                        for child_param_key, child_param_value in child_params.items():
+                                            # If param is format placeholder, we can replace it with a child value of the same name from the parent or config
+                                            if child_param_value == '{}':
+                                                if config.get(child_param_key):
+                                                    child_params[child_param_key] = param_value.format(config[param_key])
+                                                elif row.get(child_param_key):
+                                                    child_params[child_param_key] = param_value.format(row[child_param_key])
+
                                     child_data_key = child_endpoint_config.get('data_key', 'results')
                                     child_bookmark_column = child_endpoint_config.get('replication_key', None)
 
-                                    child_tap_data = client.request_data(stream=child_stream, endpoint=child_path, data_key=child_data_key, day=day)
+                                    child_tap_data = client.request_data(
+                                        stream=child_stream,
+                                        endpoint=child_path,
+                                        data_key=child_data_key,
+                                        day=day,
+                                        additional_params=child_params
+                                    )
 
-                                    for child_row in child_tap_data():
+                                    for child_row in child_tap_data:
                                         # write one or more rows to the stream:
                                         singer.write_records(child_stream.tap_stream_id, [child_row])
                                         if child_bookmark_column:
                                             # update bookmark to latest value
-                                            singer.write_state({child_stream.tap_stream_id: child_row[child_bookmark_column]})
+                                            singer.write_state({child_stream.tap_stream_id: day.strftime(DATE_FORMAT)})
+                day += timedelta(days=1)
 
 
 @utils.handle_top_exception(LOGGER)

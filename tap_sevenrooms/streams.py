@@ -1,35 +1,45 @@
 STREAMS = {
-    'client': {
+    'clients': {
         'path': 'clients/export',
         'data_key': 'results',
         'key_properties': ['id'],
-        'replication_method': 'FULL_TABLE'
+        'replication_method': 'FULL_TABLE',
+        'use_dates': False,
+        'params': {
+            'venue_group_id': '{}'
+        }
     },
-    'reservation': {
+    'reservations': {
         'path': 'reservations/export',
         'data_key': 'results',
         'key_properties': ['id'],
         'replication_method': 'INCREMENTAL',
-        'replication_key': 'updated'
+        'replication_keys': ['updated'],
+        'params': {
+            'venue_group_id': '{}'
+        }
     },
     'requests': {
         'path': 'requests',
         'key_properties': ['id'],
         'replication_method': 'INCREMENTAL',
-        'replication_key': 'updated'
+        'replication_keys': ['updated']
     },
     'venues': {
         'path': 'venues',
         'data_key': 'results',
         'key_properties': ['id'],
         'replication_method': 'FULL_TABLE',
+        'params': {
+            'venue_group_id': '{}'
+        },
         'children': {
             'charges': {
                 'path': 'venues/{}/charges',
                 'data_key': 'charges',
                 'key_properties': ['id'],
                 'replication_method': 'INCREMENTAL',
-                'replication_key': 'updated'
+                'replication_keys': ['updated']
             }
         }
     }

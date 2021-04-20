@@ -1,5 +1,7 @@
 {
-  "username": "my_username",
-  "password": "my_password",
+  "base_url": "https://demo.sevenrooms.com/api-ext/2_2",
+  "client_id": "my_username",
+  "client_secret": "my_password",
+  "venue_group_id": "venue_gid",
   "start_date": "2017-01-01T00:00:00Z"
 }
