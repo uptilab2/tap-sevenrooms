@@ -104,6 +104,15 @@ def sync(client, config, state, catalog):
             # This is used to determine if we are using to_date from_date in the query params
             use_dates = endpoint_config.get('use_dates', True)
 
+            # This is any additionnal params that may be used for the request to the API
+            params = endpoint_config.get('params', None)
+
+            if params:
+                for param_key, param_value in params.items():
+                    # If param is format placeholder, use the key to get the value from the config.
+                    if param_value == '{}' and config.get(param_key):
+                        params[param_key] = param_value.format(config[param_key])
+
             # replication_ind defaults to True, set to False when you shouldn't replicate parent
             replication_ind = endpoint_config.get('replication_ind', True)
             if replication_ind:
@@ -179,9 +188,9 @@ def sync(client, config, state, catalog):
                 if not use_dates:
                     # The case of items not iterable by date then skip to end_date and don't include params in request
                     day = end_date
-                    tap_data = client.request_data(stream=stream, endpoint=path, data_key=data_key, day=day, use_dates=False)
+                    tap_data = client.request_data(stream=stream, endpoint=path, data_key=data_key, day=day, use_dates=False, params=params)
                 else:
-                    tap_data = client.request_data(stream=stream, endpoint=path, data_key=data_key, day=day)
+                    tap_data = client.request_data(stream=stream, endpoint=path, data_key=data_key, day=day, params=params)
 
                 for row in tap_data:
                     # write one or more rows to the stream:
@@ -204,10 +213,22 @@ def sync(client, config, state, catalog):
                                     # we can use .format() to insert the parent ID into the URL route.
                                     child_path = child_endpoint_config.get('path', child_stream.tap_stream_id).format(str(parent_id))
 
+                                    # This is any additionnal params that may be used for the request to the API
+                                    child_params = child_endpoint_config.get('params', None)
+
+                                    if child_params:
+                                        for child_param_key, child_param_value in child_params.items():
+                                            # If param is format placeholder, we can replace it with a child value of the same name from the parent or config
+                                            if child_param_value == '{}':
+                                                if config.get(child_param_key):
+                                                    child_params[child_param_key] = param_value.format(config[param_key])
+                                                elif row.get(child_param_key):
+                                                    child_params[child_param_key] = param_value.format(row[child_param_key])
+
                                     child_data_key = child_endpoint_config.get('data_key', 'results')
                                     child_bookmark_column = child_endpoint_config.get('replication_key', None)
 
-                                    child_tap_data = client.request_data(stream=child_stream, endpoint=child_path, data_key=child_data_key, day=day)
+                                    child_tap_data = client.request_data(stream=child_stream, endpoint=child_path, data_key=child_data_key, day=day, params=child_params)
 
                                     for child_row in child_tap_data:
                                         # write one or more rows to the stream:

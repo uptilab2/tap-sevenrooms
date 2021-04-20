@@ -4,14 +4,20 @@ STREAMS = {
         'data_key': 'results',
         'key_properties': ['id'],
         'replication_method': 'FULL_TABLE',
-        'use_dates': False
+        'use_dates': False,
+        'params': {
+            'venue_group_id': '{}'
+        }
     },
     'reservations': {
         'path': 'reservations/export',
         'data_key': 'results',
         'key_properties': ['id'],
         'replication_method': 'INCREMENTAL',
-        'replication_keys': ['updated']
+        'replication_keys': ['updated'],
+        'params': {
+            'venue_group_id': '{}'
+        }
     },
     'requests': {
         'path': 'requests',
@@ -24,6 +30,9 @@ STREAMS = {
         'data_key': 'results',
         'key_properties': ['id'],
         'replication_method': 'FULL_TABLE',
+        'params': {
+            'venue_group_id': '{}'
+        },
         'children': {
             'charges': {
                 'path': 'venues/{}/charges',

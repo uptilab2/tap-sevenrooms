@@ -19,6 +19,7 @@ API login is performed via ID and SECRET if no API token is found.
   "base_url: string,
   "client_id": string,
   "client_secret": string,
+  "venue_group_id": string,
   "start_date": string (YYYY-MM-DD),
 }
 ```

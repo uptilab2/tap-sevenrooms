@@ -137,7 +137,7 @@ class SevenRoomsClient:
         else:
             handle_request_error(res)
 
-    def request_data(self, stream=None, endpoint=None, data_key=None, day=None, use_dates=True):
+    def request_data(self, stream=None, endpoint=None, data_key=None, day=None, use_dates=True, additional_params=None):
 
         if not stream or not endpoint:
             raise SevenroomClientError('No stream or endpoint sent to client for request.')
@@ -157,6 +157,9 @@ class SevenRoomsClient:
         logger.info(f"Request for date {date}")
 
         params = dict(limit=400)
+
+        if additional_params:
+            params.update(additional_params)
 
         if use_dates:
             params['to_date'] = date
