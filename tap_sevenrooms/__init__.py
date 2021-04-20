@@ -13,7 +13,7 @@ from .schema import get_schemas, flatten_streams
 from .client import SevenRoomsClient
 from .streams import STREAMS
 
-
+DATE_FORMAT = "%Y-%m-%d"
 REQUIRED_CONFIG_KEYS = [
     "client_id",
     "client_secret",
@@ -175,7 +175,7 @@ def sync(client, config, state, catalog):
 
             today = datetime.now()
             day = state.get(stream.tap_stream_id) or config.get('start_date')
-            end_date = utils.strptime_to_utc(config['end_date'][:10]) if 'end_date' in config and config['end_date'] else today.strftime("%Y-%m-%d")
+            end_date = utils.strptime_to_utc(config['end_date'][:10]) if 'end_date' in config and config['end_date'] else today.strftime(DATE_FORMAT)
 
             day = utils.strptime_to_utc(day)
             end_date = utils.strptime_to_utc(end_date)
@@ -197,7 +197,7 @@ def sync(client, config, state, catalog):
                     singer.write_records(stream.tap_stream_id, [row])
                     if bookmark_column:
                         # update bookmark to latest value
-                        singer.write_state({stream.tap_stream_id: row[bookmark_column[0]]})
+                        singer.write_state({stream.tap_stream_id: day.strftime(DATE_FORMAT)})
 
                     # Handle the child streams and get the data for those
                     if children_to_sync:
@@ -241,7 +241,7 @@ def sync(client, config, state, catalog):
                                         singer.write_records(child_stream.tap_stream_id, [child_row])
                                         if child_bookmark_column:
                                             # update bookmark to latest value
-                                            singer.write_state({child_stream.tap_stream_id: child_row[child_bookmark_column[0]]})
+                                            singer.write_state({child_stream.tap_stream_id: day.strftime(DATE_FORMAT)})
                 day += timedelta(days=1)
 
 
