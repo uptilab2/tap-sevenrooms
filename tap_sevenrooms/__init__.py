@@ -188,9 +188,9 @@ def sync(client, config, state, catalog):
                 if not use_dates:
                     # The case of items not iterable by date then skip to end_date and don't include params in request
                     day = end_date
-                    tap_data = client.request_data(stream=stream, endpoint=path, data_key=data_key, day=day, use_dates=False, params=params)
+                    tap_data = client.request_data(stream=stream, endpoint=path, data_key=data_key, day=day, use_dates=False, additional_params=params)
                 else:
-                    tap_data = client.request_data(stream=stream, endpoint=path, data_key=data_key, day=day, params=params)
+                    tap_data = client.request_data(stream=stream, endpoint=path, data_key=data_key, day=day, additional_params=params)
 
                 for row in tap_data:
                     # write one or more rows to the stream:
@@ -228,7 +228,13 @@ def sync(client, config, state, catalog):
                                     child_data_key = child_endpoint_config.get('data_key', 'results')
                                     child_bookmark_column = child_endpoint_config.get('replication_key', None)
 
-                                    child_tap_data = client.request_data(stream=child_stream, endpoint=child_path, data_key=child_data_key, day=day, params=child_params)
+                                    child_tap_data = client.request_data(
+                                        stream=child_stream,
+                                        endpoint=child_path,
+                                        data_key=child_data_key,
+                                        day=day,
+                                        additional_params=child_params
+                                    )
 
                                     for child_row in child_tap_data:
                                         # write one or more rows to the stream:
