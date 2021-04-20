@@ -166,7 +166,6 @@ class SevenRoomsClient:
         # Loop until cursor returns nothing
         while True:
             logger.info(f"...page {page}...")
-            logger.info(params)
 
             res = self.get_data(endpoint, params)
 
