@@ -152,7 +152,7 @@ def sync(client, config, state, catalog):
 
                             singer.write_schema(
                                 stream_name=child_stream_name,
-                                schema=child_stream.schema,
+                                schema=child_stream.schema.to_dict(),
                                 key_properties=child_stream.key_properties,
                             )
 
