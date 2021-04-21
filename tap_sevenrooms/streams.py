@@ -33,16 +33,14 @@ STREAMS = {
         'params': {
             'venue_group_id': '{}'
         },
-        'children': [
-            {
-                'charges': {
-                    'path': 'venues/{}/charges',
-                    'data_key': 'charges',
-                    'key_properties': ['id'],
-                    'replication_method': 'INCREMENTAL',
-                    'replication_keys': ['updated']
-                }
+        'children': {
+            'charges': {
+                'path': 'venues/{}/charges',
+                'data_key': 'charges',
+                'key_properties': ['id'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['updated']
             }
-        ]
+        }
     }
 }
