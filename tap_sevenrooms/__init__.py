@@ -140,7 +140,7 @@ def sync(client, config, state, catalog):
 
             # Here we loop through any children streams and lookup info for each row.
             children = endpoint_config.get('children')
-            children_to_sync = []
+            children_to_sync = dict()
             if children:
                 for child_stream_name, child_endpoint_config in children.items():
                     if child_stream_name in selected_streams:
