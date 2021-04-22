@@ -98,9 +98,6 @@ def sync(client, config, state, catalog):
             # Key used in the response array.
             data_key = endpoint_config.get('data_key', 'results')
 
-            # The field being looked up for replication, usually the "updated" datetime column
-            bookmark_column = endpoint_config.get('replication_keys', None)
-
             # This is used to determine if we are using to_date from_date in the query params
             use_dates = endpoint_config.get('use_dates', True)
 
@@ -192,13 +189,10 @@ def sync(client, config, state, catalog):
                 else:
                     tap_data = client.request_data(stream=stream, endpoint=path, data_key=data_key, day=day, additional_params=params)
 
-                for row in tap_data:
-                    # write one or more rows to the stream:
-                    singer.write_records(stream.tap_stream_id, [row])
-                    if bookmark_column:
-                        # update bookmark to latest value
-                        singer.write_state({stream.tap_stream_id: day.strftime(DATE_FORMAT)})
+                # write one or more rows to the stream:
+                singer.write_records(stream.tap_stream_id, tap_data)
 
+                for row in tap_data:
                     # Handle the child streams and get the data for those
                     if children_to_sync:
                         parent_id_field = endpoint_config.get('key_properties')
@@ -227,7 +221,6 @@ def sync(client, config, state, catalog):
                                                     child_params[child_param_key] = param_value.format(row[child_param_key])
 
                                     child_data_key = child_endpoint_config.get('data_key', 'results')
-                                    child_bookmark_column = child_endpoint_config.get('replication_key', None)
 
                                     child_tap_data = client.request_data(
                                         stream=child_stream,
@@ -237,12 +230,10 @@ def sync(client, config, state, catalog):
                                         additional_params=child_params
                                     )
 
-                                    for child_row in child_tap_data:
-                                        # write one or more rows to the stream:
-                                        singer.write_records(child_stream.tap_stream_id, [child_row])
-                                        if child_bookmark_column:
-                                            # update bookmark to latest value
-                                            singer.write_state({child_stream.tap_stream_id: day.strftime(DATE_FORMAT)})
+                                    # write one or more rows to the stream:
+                                    singer.write_records(child_stream.tap_stream_id, child_tap_data)
+                                    singer.write_state({child_stream.tap_stream_id: day.strftime(DATE_FORMAT)})
+                singer.write_state({stream.tap_stream_id: day.strftime(DATE_FORMAT)})
                 day += timedelta(days=1)
 
 
