@@ -140,7 +140,7 @@ def sync(client, config, state, catalog):
 
             # Here we loop through any children streams and lookup info for each row.
             children = endpoint_config.get('children')
-            children_to_sync = dict()
+            children_to_sync = []
             if children:
                 for child_stream_name, child_endpoint_config in children.items():
                     if child_stream_name in selected_streams:
@@ -157,7 +157,7 @@ def sync(client, config, state, catalog):
                             )
 
                             # Add the stream and it's config data to the list of children
-                            children_to_sync[child_stream_name] = child_stream, child_endpoint_config
+                            children_to_sync.append((child_stream, child_endpoint_config))
 
                             # Get the selected fields used for syncing.
                             child_mdata = metadata.to_map(child_stream.metadata)
@@ -206,6 +206,7 @@ def sync(client, config, state, catalog):
                             # We are using the parent ID in the path or other settings of the child.
                             parent_id = row.get(parent_id_field[0])
                             if parent_id:
+                                print(children_to_sync)
                                 for child_stream, child_endpoint_config in children_to_sync:
                                     LOGGER.info(f'Syncing: {child_stream.tap_stream_id}, parent_stream: {stream_name}, parent_id: {parent_id}')
 

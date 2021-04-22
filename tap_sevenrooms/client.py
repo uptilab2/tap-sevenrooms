@@ -172,12 +172,16 @@ class SevenRoomsClient:
 
             res = self.get_data(endpoint, params)
 
-            if not res['results']:
+            if data_key not in res or not res[data_key]:
+                break
+
+            data += parse_results(res[data_key], date_time)
+            page += 1
+
+            if 'cursor' not in res or not res['cursor']:
                 break
 
             params['cursor'] = res['cursor']
-            data += parse_results(res[data_key], date_time)
-            page += 1
 
         return data
 
