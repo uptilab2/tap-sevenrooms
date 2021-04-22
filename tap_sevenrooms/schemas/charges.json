@@ -11,7 +11,7 @@
 		"charged": {"type": ["null", "string"]},
 		"entity_date": {"type": ["null", "string"]},
 		"entity_id": {"type": ["null", "string"]},
-		"failure_code": {"type": ["null", "integer"]},
+		"failure_code": {"type": ["null", "string"]},
 		"failure_message": {"type": ["null", "string"]},
 		"gratuity_amount": {"type": ["null", "integer"]},
 		"is_info_request": {"type": ["null", "boolean"]},
