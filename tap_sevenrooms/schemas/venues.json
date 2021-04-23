@@ -14,7 +14,7 @@
 							"large": {"type": ["null", "string"]},
 							"medium": {"type": ["null", "string"]},
 							"raw": {"type": ["null", "string"]},
-							"small": {"type": ["null", "string"]},
+							"small": {"type": ["null", "string"]}
 						}
 					}
 				},
@@ -94,7 +94,7 @@
 							"large": {"type": ["null", "string"]},
 							"medium": {"type": ["null", "string"]},
 							"raw": {"type": ["null", "string"]},
-							"small": {"type": ["null", "string"]},
+							"small": {"type": ["null", "string"]}
 						}
 					}
 				},
