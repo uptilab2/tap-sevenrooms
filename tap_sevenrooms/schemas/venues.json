@@ -3,7 +3,26 @@
 	"additionalProperties": false,
 	"properties": {
 		"address": {"type": ["null", "string"]},
-		"black_logo": {"type": ["null", "string"]},
+		"black_logo": {
+			"anyOf": [
+				{
+					"type": "array",
+					"items": {
+						"type": ["null", "object"],
+						"additionalProperties": false,
+						"properties": {
+							"large": {"type": ["null", "string"]},
+							"medium": {"type": ["null", "string"]},
+							"raw": {"type": ["null", "string"]},
+							"small": {"type": ["null", "string"]},
+						}
+					}
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
 		"block_logo_direct": {
 			"anyOf": [
 				{
@@ -64,7 +83,26 @@
 		"venue_group_name": {"type": ["null", "string"]},
 		"venue_url_key": {"type": ["null", "string"]},
 		"website": {"type": ["null", "string"]},
-		"white_logo": {"type": ["null", "string"]},
+		"white_logo": {
+			"anyOf": [
+				{
+					"type": "array",
+					"items": {
+						"type": ["null", "object"],
+						"additionalProperties": false,
+						"properties": {
+							"large": {"type": ["null", "string"]},
+							"medium": {"type": ["null", "string"]},
+							"raw": {"type": ["null", "string"]},
+							"small": {"type": ["null", "string"]},
+						}
+					}
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
 		"white_logo_direct": {
 			"anyOf": [
 				{
