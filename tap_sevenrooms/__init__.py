@@ -191,6 +191,8 @@ def sync(client, config, state, catalog):
 
                 # write one or more rows to the stream:
                 singer.write_records(stream.tap_stream_id, tap_data)
+                state[stream.tap_stream_id] = day.strftime(DATE_FORMAT)
+                singer.write_state(state)
 
                 for row in tap_data:
                     # Handle the child streams and get the data for those
@@ -231,8 +233,8 @@ def sync(client, config, state, catalog):
 
                                     # write one or more rows to the stream:
                                     singer.write_records(child_stream.tap_stream_id, child_tap_data)
-                                    singer.write_state({child_stream.tap_stream_id: day.strftime(DATE_FORMAT)})
-                singer.write_state({stream.tap_stream_id: day.strftime(DATE_FORMAT)})
+                                    state[child_stream.tap_stream_id] = day.strftime(DATE_FORMAT)
+                                    singer.write_state(state)
                 day += timedelta(days=1)
 
 
