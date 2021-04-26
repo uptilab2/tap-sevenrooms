@@ -108,7 +108,7 @@
 							"raw": {"type": ["null", "string"]},
 							"medium_height": {"type": ["null", "integer"]},
 							"small": {"type": ["null", "string"]},
-							"large_width": {"type": ["null", "string"]}
+							"large_width": {"type": ["null", "integer"]}
 						}
 					}
 				},
