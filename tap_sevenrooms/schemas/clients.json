@@ -127,8 +127,8 @@
 						"properties": {
 							"x": {"type": ["null", "number"]},
 							"y": {"type": ["null", "number"]},
-							"height": {"type": ["null", "integer"]},
-							"width": {"type": ["null", "integer"]}
+							"height": {"type": ["null", "number"]},
+							"width": {"type": ["null", "number"]}
 						}
 					}
 				},
