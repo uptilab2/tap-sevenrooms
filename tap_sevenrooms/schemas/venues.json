@@ -12,9 +12,15 @@
 						"additionalProperties": false,
 						"properties": {
 							"large": {"type": ["null", "string"]},
+							"large_height": {"type": ["null", "integer"]},
+							"large_width": {"type": ["null", "integer"]},
 							"medium": {"type": ["null", "string"]},
+							"medium_height": {"type": ["null", "integer"]},
+							"medium_width": {"type": ["null", "integer"]},
 							"raw": {"type": ["null", "string"]},
-							"small": {"type": ["null", "string"]}
+							"small": {"type": ["null", "string"]},
+							"small_height": {"type": ["null", "integer"]},
+							"small_width": {"type": ["null", "integer"]}
 						}
 					}
 				},
@@ -33,7 +39,7 @@
 						"properties": {
 							"large": {"type": ["null", "string"]},
 							"large_height": {"type": ["null", "integer"]},
-							"large_width": {"type": ["null", "string"]},
+							"large_width": {"type": ["null", "integer"]},
 							"medium": {"type": ["null", "string"]},
 							"medium_height": {"type": ["null", "integer"]},
 							"medium_width": {"type": ["null", "integer"]},
@@ -92,9 +98,15 @@
 						"additionalProperties": false,
 						"properties": {
 							"large": {"type": ["null", "string"]},
+							"large_height": {"type": ["null", "integer"]},
+							"large_width": {"type": ["null", "integer"]},
 							"medium": {"type": ["null", "string"]},
+							"medium_height": {"type": ["null", "integer"]},
+							"medium_width": {"type": ["null", "integer"]},
 							"raw": {"type": ["null", "string"]},
-							"small": {"type": ["null", "string"]}
+							"small": {"type": ["null", "string"]},
+							"small_height": {"type": ["null", "integer"]},
+							"small_width": {"type": ["null", "integer"]}
 						}
 					}
 				},
@@ -113,7 +125,7 @@
 						"properties": {
 							"large": {"type": ["null", "string"]},
 							"large_height": {"type": ["null", "integer"]},
-							"large_width": {"type": ["null", "string"]},
+							"large_width": {"type": ["null", "integer"]},
 							"medium": {"type": ["null", "string"]},
 							"medium_height": {"type": ["null", "integer"]},
 							"medium_width": {"type": ["null", "integer"]},
