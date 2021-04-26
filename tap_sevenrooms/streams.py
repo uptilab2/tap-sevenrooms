@@ -19,12 +19,6 @@ STREAMS = {
             'venue_group_id': '{}'
         }
     },
-    'requests': {
-        'path': 'requests',
-        'key_properties': ['id'],
-        'replication_method': 'INCREMENTAL',
-        'replication_keys': ['updated']
-    },
     'venues': {
         'path': 'venues',
         'data_key': 'results',
