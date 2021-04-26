@@ -142,7 +142,7 @@
 				}
 			]
 		},
-		"total_payment": {"type": ["null", "integer"]},
+		"total_payment": {"type": ["null", "number"]},
 		"updated": {"type": ["null", "string"], "format": "date-time"},
 		"user": {
 			"anyOf": [
