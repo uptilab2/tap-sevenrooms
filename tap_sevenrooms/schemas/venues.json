@@ -76,15 +76,15 @@
 						"additionalProperties": false,
 						"properties": {
 							"large": {"type": ["null", "string"]},
-							"large_height": {"type": ["null", "integer"]},
-							"large_width": {"type": ["null", "integer"]},
+							"large_height": {"type": ["null", "string"]},
+							"large_width": {"type": ["null", "string"]},
 							"medium": {"type": ["null", "string"]},
-							"medium_height": {"type": ["null", "integer"]},
-							"medium_width": {"type": ["null", "integer"]},
+							"medium_height": {"type": ["null", "string"]},
+							"medium_width": {"type": ["null", "string"]},
 							"raw": {"type": ["null", "string"]},
 							"small": {"type": ["null", "string"]},
-							"small_height": {"type": ["null", "integer"]},
-							"small_width": {"type": ["null", "integer"]}
+							"small_height": {"type": ["null", "string"]},
+							"small_width": {"type": ["null", "string"]}
 						}
 					}
 				},
