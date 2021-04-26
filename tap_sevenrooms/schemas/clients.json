@@ -148,9 +148,9 @@
 		"total_cancelations": {"type": ["null", "integer"]},
 		"total_covers": {"type": ["null", "integer"]},
 		"total_noshows": {"type": ["null", "integer"]},
-		"total_spend": {"type": ["null", "integer"]},
-		"total_spend_per_cover": {"type": ["null", "integer"]},
-		"total_spend_per_visit": {"type": ["null", "integer"]},
+		"total_spend": {"type": ["null", "number"]},
+		"total_spend_per_cover": {"type": ["null", "number"]},
+		"total_spend_per_visit": {"type": ["null", "number"]},
 		"total_visits": {"type": ["null", "integer"]},
 		"updated": {"type": ["null", "string"], "format": "date-time"},
 		"user": {
