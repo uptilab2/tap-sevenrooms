@@ -166,8 +166,9 @@ class SevenRoomsClient:
             params['from_date'] = date
 
         page = 1
+        max_page = 30
         # Loop until cursor returns nothing
-        while True:
+        while page <= max_page:
             logger.info(f"...page {page}...")
 
             res = self.get_data(endpoint, params)
@@ -182,6 +183,9 @@ class SevenRoomsClient:
                 break
 
             params['cursor'] = res['cursor']
+
+        if page == max_page:
+            logger.info('Max page 30/30 reached, no more data being synced.')
 
         return data
 
