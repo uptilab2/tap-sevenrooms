@@ -41,7 +41,7 @@
 		"min_price": {"type": ["null", "integer"]},
 		"modify_reservation_link": {"type": ["null", "string"]},
 		"notes": {"type": ["null", "string"]},
-		"onsite_payment": {"type": ["null", "integer"]},
+		"onsite_payment": {"type": ["null", "number"]},
 		"paid_by": {"type": ["null", "string"]},
 		"phone_number": {"type": ["null", "string"]},
 		"policy": {"type": ["null", "string"]},
