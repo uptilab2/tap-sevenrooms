@@ -91,6 +91,8 @@ def sync(client, config, state, catalog):
     # Loop through selected_streams
     for stream_name, endpoint_config in STREAMS.items():
         if stream_name in selected_streams:
+            stream = selected_streams[stream_name]
+
             LOGGER.info(f"Syncing stream: {stream.tap_stream_id}")
             update_currently_syncing(state, stream_name)
             path = endpoint_config.get('path', stream_name)
