@@ -5,7 +5,7 @@
 		"access_persistent_id": {"type": ["null", "string"]},
 		"address": {"type": ["null", "string"]},
 		"address_2": {"type": ["null", "string"]},
-		"arrival_time": {"type": ["null", "string"], "format": "date-time"},
+		"arrival_time": {"type": ["null", "string"]},
 		"arrived_guests": {"type": ["null", "integer"]},
 		"booked_by": {"type": ["null", "string"]},
 		"check_numbers": {"type": ["null", "string"]},
